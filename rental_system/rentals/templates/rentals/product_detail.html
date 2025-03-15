@@ -1,0 +1,12 @@
+{% extends 'rentals/base.html' %}
+{% block title %}{{ product.brand }} {{ product.model }}{% endblock %}
+{% block content %}
+<h2>{{ product.brand }} {{ product.model }}</h2>
+{% if product.image %}
+    <img src="{{ product.image.url }}" class="img-fluid mb-3" style="max-width: 400px;" alt="{{ product.brand }}">
+{% endif %}
+<p><strong>Kategoria:</strong> {{ product.category.name }}</p>
+<p><strong>Status:</strong> {{ product.status }}</p>
+<p><strong>Opis:</strong> {{ product.description }}</p>
+<a href="{% url 'rentals:product_list' %}" class="btn btn-secondary">Powrót</a>
+{% endblock %}

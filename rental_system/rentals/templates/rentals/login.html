@@ -1,0 +1,23 @@
+{% extends 'rentals/base.html' %}
+{% block title %}Logowanie{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
+    <div class="card bg-dark text-white" style="width: 350px;">
+        <div class="card-body">
+            <h3 class="text-center">Zaloguj się</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_username" class="form-label">Nazwa użytkownika:</label>
+                    {{ form.username }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_password" class="form-label">Hasło:</label>
+                    {{ form.password }}
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Zaloguj</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

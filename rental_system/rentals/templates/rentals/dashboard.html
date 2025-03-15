@@ -1,0 +1,51 @@
+{% extends 'rentals/base.html' %}
+{% block title %}Moje konto{% endblock %}
+{% block content %}
+<h2>Moje aktywne wypożyczenia</h2>
+{% if active_orders %}
+  <ul class="list-group mb-4">
+  {% for order in active_orders %}
+    <li class="list-group-item bg-dark text-white">
+      <strong>Zamówienie #{{ order.id }}</strong> – kod konferencji: {{ order.conference_code }}<br/>
+      Wypożyczono:
+      {% for p in order.products.all %}{{ p.brand }} {{ p.model }}{% if not forloop.last %}, {% endif %}{% endfor %}
+      {% for k in order.komplets.all %}{{ k.name }}{% if not forloop.last %}, {% endif %}{% endfor %}<br/>
+      Odbiór: {{ order.pickup_date }} &nbsp;|&nbsp; Zwrot: {{ order.return_date }} &nbsp;|&nbsp; Status: {{ order.get_status_display }}
+    </li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p>Brak aktywnych wypożyczeń.</p>
+{% endif %}
+
+<h3>Historia wypożyczeń</h3>
+{% if past_orders %}
+  <ul class="list-group">
+  {% for order in past_orders %}
+    <li class="list-group-item bg-secondary text-light">
+      Zamówienie #{{ order.id }} ({{ order.reserved_at|date:"Y-m-d" }}) – Zwrócono {{ order.return_date }}<br/>
+      <small>Kod konf.: {{ order.conference_code }}; Sprzęt:
+      {% for p in order.products.all %}{{ p.brand }} {{ p.model }}{% if not forloop.last %}, {% endif %}{% endfor %}
+      {% for k in order.komplets.all %}{{ k.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+      </small>
+    </li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p>Brak zakończonych wypożyczeń.</p>
+{% endif %}
+
+<h3>Mój profil</h3>
+<div class="card bg-dark text-white mb-3" style="max-width: 400px;">
+  <div class="card-body">
+    <p><strong>Użytkownik:</strong> {{ user.username }}</p>
+    <p><strong>Pseudonim:</strong> {{ profile.nickname|default:"(brak)" }}</p>
+    {% if profile.avatar %}
+      <p><strong>Avatar:</strong><br/><img src="{{ profile.avatar.url }}" alt="Avatar" class="img-thumbnail" width="150"></p>
+    {% else %}
+      <p><em>Brak zdjęcia profilowego.</em></p>
+    {% endif %}
+    <a href="{% url 'rentals:profile_edit' %}" class="btn btn-secondary">Edytuj profil</a>
+  </div>
+</div>
+{% endblock %}

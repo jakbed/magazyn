@@ -1,0 +1,41 @@
+{% extends 'rentals/base.html' %}
+{% block title %}Produkty - Wypożyczalnia{% endblock %}
+{% block content %}
+<h2>Lista produktów</h2>
+<table class="table table-dark table-striped">
+  <thead>
+    <tr><th>Marka i model</th><th>Kategoria</th><th>Status</th></tr>
+  </thead>
+  <tbody>
+    {% for prod in products %}
+    <tr>
+      <td><a href="{% url 'rentals:product_detail' prod.id %}">{{ prod.brand }} {{ prod.model }}</a></td>
+      <td>{{ prod.category.name }}</td>
+      <td>{{ prod.status }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% if is_paginated %}
+  <!-- Paginacja -->
+  <nav>
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">«</a></li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">«</span></li>
+      {% endif %}
+      {% for num in paginator.page_range %}
+        <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">»</a></li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">»</span></li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}
+{% endblock %}

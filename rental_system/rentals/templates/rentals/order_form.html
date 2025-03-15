@@ -1,0 +1,29 @@
+{% extends 'rentals/base.html' %}
+{% block title %}Nowe wypożyczenie{% endblock %}
+{% block content %}
+<h2>Nowe wypożyczenie</h2>
+<form method="post">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="id_conference_code" class="form-label">Kod konferencji:</label>
+    {{ form.conference_code }}
+  </div>
+  <div class="mb-3">
+    <label for="id_products" class="form-label">Wybierz produkty:</label>
+    {{ form.products }}
+  </div>
+  <div class="mb-3">
+    <label for="id_komplets" class="form-label">Wybierz komplety:</label>
+    {{ form.komplets }}
+  </div>
+  <div class="mb-3">
+    <label for="id_pickup_date" class="form-label">Data odbioru:</label>
+    {{ form.pickup_date }}
+  </div>
+  <div class="mb-3">
+    <label for="id_return_date" class="form-label">Data zwrotu:</label>
+    {{ form.return_date }}
+  </div>
+  <button type="submit" class="btn btn-primary">Zarezerwuj</button>
+</form>
+{% endblock %}
