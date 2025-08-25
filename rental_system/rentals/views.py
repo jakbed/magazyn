@@ -172,6 +172,17 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def get_object(self):
         return self.request.user
 
+    def get_initial(self):
+        initial = super().get_initial()
+        profile = self.request.user.profile
+        initial['nickname'] = profile.nickname
+        initial['avatar'] = profile.avatar
+        return initial
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return redirect(self.get_success_url())
+
 
 # Widok zgłoszenia serwisowego – dostępny tylko dla personelu (staff)
 class ServiceCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
