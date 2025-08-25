@@ -1,29 +1,72 @@
 {% extends 'rentals/base.html' %}
+{% load widget_tweaks %}  {# Załadowanie widget_tweaks do stylizacji pól formularza #}
+
 {% block title %}Nowe wypożyczenie{% endblock %}
+
 {% block content %}
-<h2>Nowe wypożyczenie</h2>
-<form method="post">
+<h2 class="mb-4">Nowe wypożyczenie</h2>
+
+<form method="post" class="needs-validation" novalidate>
   {% csrf_token %}
+
   <div class="mb-3">
     <label for="id_conference_code" class="form-label">Kod konferencji:</label>
-    {{ form.conference_code }}
+    {{ form.conference_code|add_class:"form-control" }}
   </div>
+
   <div class="mb-3">
-    <label for="id_products" class="form-label">Wybierz produkty:</label>
-    {{ form.products }}
+    <label class="form-label">Wybierz produkty:</label>
+    <div class="form-control">
+      {% for product in form.products.field.queryset %}
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="products" value="{{ product.id }}" id="product_{{ product.id }}">
+          <label class="form-check-label" for="product_{{ product.id }}">
+            {{ product.brand }} {{ product.model }} - {{ product.code }} (Dostępnych: {{ product.quantity }})
+          </label>
+        </div>
+      {% endfor %}
+    </div>
   </div>
+
   <div class="mb-3">
-    <label for="id_komplets" class="form-label">Wybierz komplety:</label>
-    {{ form.komplets }}
+    <label class="form-label">Wybierz komplety:</label>
+    <div class="form-control">
+      {% for komplet in form.komplets.field.queryset %}
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="komplets" value="{{ komplet.id }}" id="komplet_{{ komplet.id }}">
+          <label class="form-check-label" for="komplet_{{ komplet.id }}">
+            {{ komplet.name }}
+          </label>
+        </div>
+      {% endfor %}
+    </div>
   </div>
+
   <div class="mb-3">
     <label for="id_pickup_date" class="form-label">Data odbioru:</label>
-    {{ form.pickup_date }}
+    {{ form.pickup_date|add_class:"form-control datepicker" }}
   </div>
+
   <div class="mb-3">
     <label for="id_return_date" class="form-label">Data zwrotu:</label>
-    {{ form.return_date }}
+    {{ form.return_date|add_class:"form-control datepicker" }}
   </div>
+
   <button type="submit" class="btn btn-primary">Zarezerwuj</button>
 </form>
+
+{# Dodanie skryptu do obsługi kalendarza Bootstrap Datepicker #}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+<script>
+  $(document).ready(function(){
+    $('.datepicker').datepicker({
+      format: 'yyyy-mm-dd',
+      autoclose: true,
+      todayHighlight: true
+    });
+  });
+</script>
+
 {% endblock %}

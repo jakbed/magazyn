@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rentals',              # nasza aplikacja wypożyczeń
     'import_export',
+    'widget_tweaks',
 ]
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'rentals:dashboard'  # Po zalogowaniu przekierowanie na kokpit użytkownika
